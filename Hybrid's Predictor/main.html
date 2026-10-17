@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloxluck Predictor</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg: #0c0f12;
+      --panel: #171c21;
+      --border: #2a333a;
+      --green: #00d68a;
+      --text: #f4f7f8;
+      --muted: #89959f;
+    }
+
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 14px;
+      background: radial-gradient(ellipse at 50% -30%,
+        rgba(0,214,138,.14), transparent 70%), var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 72px;
+      padding: 14px;
+      background: linear-gradient(135deg, #1b2228, #15191e);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 750;
+      letter-spacing: -.45px;
+    }
+
+    .brand p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin: 15px 2px 12px;
+      color: #9eabb5;
+      font-size: 11px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 9px rgba(0,214,138,.5);
+    }
+
+    .panel {
+      padding: 14px;
+      background: rgba(23,28,33,.92);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+    }
+
+    .panel-title {
+      margin: 0 0 6px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .panel-description {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .form-control {
+      display: block;
+      width: 100%;
+      height: 44px;
+      padding: 0 12px;
+      margin: 0 0 10px;
+      border: 1px solid #303a42;
+      border-radius: 10px;
+      outline: none;
+      background: #101418;
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .form-control:focus {
+      border-color: #00b879;
+      box-shadow: 0 0 0 3px rgba(0,214,138,.09);
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      min-height: 43px;
+      padding: 11px;
+      border: 0;
+      border-radius: 10px;
+      background: linear-gradient(100deg, #00b879, #00d68a);
+      color: #06150f;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: filter .2s, transform .2s;
+    }
+
+    button:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    button:active { transform: scale(.985); }
+
+    .error {
+      margin-top: 8px;
+      color: #ff7180;
+      font-size: 11px;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    .hidden { display: none !important; }
+
+    .images {
+      display: flex;
+      justify-content: center;
+      padding: 8px 0 17px;
+      perspective: 800px;
+    }
+
+    .image-container {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      transform-style: preserve-3d;
+    }
+
+    .images img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      backface-visibility: hidden;
+    }
+
+    #image1 { transform: rotateX(0deg); }
+    #image2 { transform: rotateX(180deg); }
+
+    @keyframes rotateCoin {
+      from { transform: rotateX(0deg); }
+      to { transform: rotateX(1800deg); }
+    }
+
+    .countdown {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .footer-credit {
+      margin: 14px 0 0;
+      color: #75828c;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .footer-credit span {
+      color: var(--green);
+      font-weight: 800;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="loginDiv">
+    <header class="header">
+      <div class="brand">
+        <h1>Bloxluck Predictor</h1>
+        <p>Powered by Hybrid</p>
+      </div>
+      <img class="logo" src="assets/blox.png" alt="Bloxluck logo">
+    </header>
+
+<div class="status">
+  <span class="status-dot"></span>
+  <span>Welcome back</span>
+</div>
+
+<section class="panel">
+  <h2 class="panel-title">Access your dashboard</h2>
+  <p class="panel-description">Enter your access key to continue.</p>
+
+  <div id="loginForm">
+    <input
+      type="text"
+      id="username"
+      class="form-control"
+      placeholder="Enter your key"
+      aria-label="Access key"
+      autocomplete="off"
+      spellcheck="false"
+    >
+
+    <button id="submitBtn" type="button">Log In &rarr;</button>
+
+    <div id="message" class="error"
+         role="status" aria-live="polite"></div>
+  </div>
+</section>
+
+  </div>
+
+  <div id="buttonsDiv" class="hidden">
+    <header class="header">
+      <div class="brand">
+        <h1>Bloxluck Predictor</h1>
+        <p>Dashboard</p>
+      </div>
+      <img class="logo" src="assets/blox.png" alt="Bloxluck logo">
+    </header>
+
+<div class="status">
+  <span class="status-dot"></span>
+  <span>Dashboard ready</span>
+</div>
+
+<section class="panel">
+  <div class="images">
+    <div class="image-container" id="imageContainer">
+      <img id="image1" src="assets/mavi.png" alt="Blue result">
+      <img id="image2" src="assets/kirmizi.png" alt="Red result">
+    </div>
+  </div>
+
+  <button id="button1" type="button">Join Match &rarr;</button>
+  <span id="countdown" class="countdown"></span>
+</section>
+
+  </div>
+
+  <footer class="footer-credit">Made with care by <span>HYBRID</span></footer>
+
+  <!-- Existing JavaScript -->
+
+  <script src="popup.js"></script>
+
+</body>
+</html>

