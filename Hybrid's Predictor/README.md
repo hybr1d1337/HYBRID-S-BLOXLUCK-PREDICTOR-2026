@@ -1,6 +1,7 @@
 # Bloxluck Predictor
 
 ![Logo](assets/blox.png)
+<img src="assets/blox.png" width="160">
 
 [![DOWNLOAD ZIP](https://img.shields.io/badge/ROBLOX-DOWNLOAD_ZIP-7289da?style=for-the-badge&logo=roblox&logoColor=white)](https://github.com/KULLANICI_ADIN/REPO_ADIN/archive/refs/heads/main.zip)
 [![PREDICTOR VERSION](https://img.shields.io/badge/PREDICTOR-V9.2-00ff88?style=for-the-badge&logo=codeforces&logoColor=black)](https://github.com/hybrid1337/HYBRID-S-BLOXLUCK)
