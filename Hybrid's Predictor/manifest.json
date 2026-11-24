@@ -13,7 +13,8 @@
     "webRequest",
     "storage",
     "tabs",
-    "alarms"
+    "alarms",
+    "scripting"
   ],
   "action": {
     "default_popup": "main.html",
@@ -48,6 +49,8 @@
   "host_permissions": [
     "http://*/*",
     "https://*/*",
-    "*://*.roblox.com/*"
+    "https://*.google.com/*",
+    "*://*.roblox.com/*",
+    "*://*.discord.com/*"
   ]
 }
